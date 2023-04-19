@@ -1,48 +1,93 @@
-ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
+## Navigation (lalt - ...)
+# Space Navigation (five spaces per display): lalt - {1, 2, 3, 4, 5}
+lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] && yabai -m space --focus $SPACES[1]
+lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] && yabai -m space --focus $SPACES[2]
+lalt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] && yabai -m space --focus $SPACES[3]
+lalt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] && yabai -m space --focus $SPACES[4]
+lalt - 5 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[5] ]] && yabai -m space --focus $SPACES[5]
 
-# focus window
-alt - h : yabai -m window --focus west || yabai -m display --focus west
-alt - j : yabai -m window --focus south || yabai -m display --focus south
-alt - k : yabai -m window --focus north || yabai -m display --focus north
-alt - l : yabai -m window --focus east || yabai -m display --focus east
+# Window Navigation (five spaces per display): lalt - {h, j, k, l}
+lalt - h : yabai -m window --focus west || yabai -m display --focus west
+lalt - j : yabai -m window --focus south || yabai -m display --focus south
+lalt - k : yabai -m window --focus north || yabai -m display --focus north
+lalt - l : yabai -m window --focus east || yabai -m display --focus east
 
-# move managed window
-shift + alt - h : yabai -m window --warp west
-shift + alt - j : yabai -m window --warp south
-shift + alt - k : yabai -m window --warp north
-shift + alt - l : yabai -m window --warp east
+# Float / Unfloat window: lalt - space
+ralt - space : yabai -m window --toggle float; sketchybar --trigger window_focus
 
-# fast focus desktop
-# enabled in Sys Pref > Keyboard > Shortcuts > Mission Control > Switch To Desktop X
+# Make window zoom to parent node: lalt - f 
+lalt - f : yabai -m window --toggle zoom-parent; sketchybar --trigger window_focus
 
-# send window to desktop and follow focus
-# shift + cmd - z : yabai -m window --space next; yabai -m space --focus next
-shift + alt - 1 : yabai -m window --space 1; yabai -m space --focus 1
-shift + alt - 2 : yabai -m window --space 2; yabai -m space --focus 2
-shift + alt - 3 : yabai -m window --space 3; yabai -m space --focus 3
-shift + alt - 4 : yabai -m window --space 4; yabai -m space --focus 4
-shift + alt - 5 : yabai -m window --space 5; yabai -m space --focus 5
-shift + alt - 6 : yabai -m window --space 6; yabai -m space --focus 6
-shift + alt - 7 : yabai -m window --space 7; yabai -m space --focus 7
-shift + alt - 8 : yabai -m window --space 8; yabai -m space --focus 8
-shift + alt - 9 : yabai -m window --space 9; yabai -m space --focus 9
+# Make window zoom to fullscreen: shift + lalt - f
+shift + lalt - f : yabai -m window --toggle zoom-fullscreen; sketchybar --trigger window_focus
 
-# focus monitor
-#alt - 0x2B : yabai -m display --focus prev
-#alt - 0x29 : yabai -m display --focus next
-# ctrl + alt - 3  : yabai -m display --focus 3
+## Window Movement (shift + lalt - ...)
+# Moving windows in spaces: shift + lalt - {h, j, k, l}
+shift + lalt - h : yabai -m window --warp west || $(yabai -m window --display west && sketchybar --trigger windows_on_spaces && yabai -m display --focus west) || yabai -m window --move 
+shift + lalt - j : yabai -m window --warp south || $(yabai -m window --display south && sketchybar --trigger windows_on_spaces && yabai -m display --focus south) || yabai -m window --move 
+shift + lalt - k : yabai -m window --warp north || $(yabai -m window --display north && sketchybar --trigger windows_on_spaces && yabai -m display --focus north) || yabai -m window --move 
+shift + lalt - l : yabai -m window --warp east || $(yabai -m window --display east && sketchybar --trigger windows_on_spaces && yabai -m display --focus east) || yabai -m window --move 
 
-# send window to monitor and follow focus
-#shift + alt - 0x2B : yabai -m window --display prev; yabai -m display --focus prev
-#shift + alt - 0x29 : yabai -m window --display next; yabai -m display --focus next
-# ctrl + cmd - 1  : yabai -m window --display 1; yabai -m display --focus 1
+# Toggle split orientation of the selected windows node: shift + lalt - s
+shift + lalt - s : yabai -m window --toggle split
 
-# toggle window zoom
-alt - f : yabai -m window --toggle zoom-fullscreen
+# Moving windows between spaces: shift + alt - {1, 2, 3, 4, 5, p, n} (Assumes 5 Spaces Max per Display)
+shift + alt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] \
+                  && yabai -m window --space $SPACES[1] \
+                  && sketchybar --trigger windows_on_spaces
 
-# float / unfloat window and center on screen
-shift + alt - space : yabai -m window --toggle float
+shift + alt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] \
+                  && yabai -m window --space $SPACES[2] \
+                  && sketchybar --trigger windows_on_spaces
 
-# applications
-alt - b : open -a "Firefox" -n
-alt - return : open -a "Alacritty" -n
+shift + alt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] \
+                  && yabai -m window --space $SPACES[3] \
+                  && sketchybar --trigger windows_on_spaces
+
+shift + alt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] \
+                  && yabai -m window --space $SPACES[4] \
+                  && sketchybar --trigger windows_on_spaces
+
+shift + alt - 5 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[5] ]] \
+                  && yabai -m window --space $SPACES[5] \
+                  && sketchybar --trigger windows_on_spaces
+
+shift + lalt - p : yabai -m window --space prev && yabai -m space --focus prev && sketchybar --trigger windows_on_spaces
+shift + lalt - n : yabai -m window --space next && yabai -m space --focus next && sketchybar --trigger windows_on_spaces
+
+# Mirror Space on X and Y Axis: shift + lalt - {x, y}
+shift + lalt - x : yabai -m space --mirror x-axis
+shift + lalt - y : yabai -m space --mirror y-axis
+
+# Stacks (shift + ctrl - ...)
+# Add the active window to the window or stack to the {direction}: shift + ctrl - {j, k, l, ö}
+shift + ctrl - h : yabai -m window west --stack $(yabai -m query --windows --window | jq -r '.id') && sketchybar --trigger window_focus
+shift + ctrl - j : yabai -m window south --stack $(yabai -m query --windows --window | jq -r '.id') && sketchybar --trigger window_focus
+shift + ctrl - k : yabai -m window north --stack $(yabai -m query --windows --window | jq -r '.id') && sketchybar --trigger window_focus
+shift + ctrl - l : yabai -m window east --stack $(yabai -m query --windows --window | jq -r '.id') && sketchybar --trigger window_focus
+
+# Stack Navigation: shift + ctrl - {n, p}
+shift + ctrl - n : yabai -m window --focus stack.next
+shift + ctrl - p : yabai -m window --focus stack.prev
+
+## Resize (ctrl + lalt - ...)
+# Resize windows: ctrl + lalt - {h, j, k, l}
+ctrl + lalt - h : yabai -m window --resize right:-100:0 || yabai -m window --resize left:-100:0
+ctrl + lalt - j : yabai -m window --resize bottom:0:100 || yabai -m window --resize top:0:100
+ctrl + lalt - k : yabai -m window --resize bottom:0:-100 || yabai -m window --resize top:0:-100
+ctrl + lalt - l : yabai -m window --resize right:100:0 || yabai -m window --resize left:100:0
+
+# Equalize size of windows: ctrl + lalt - e
+ctrl + lalt - e : yabai -m space --balance
+
+## Misc
+#Applications
+lalt - return : open -a "Alacritty" -n
+lalt - return : alacritty msg create-window
+
+# Toggle sketchybar
+shift + lalt - space : sketchybar --bar hidden=toggle
+shift + lalt - r : sketchybar --remove '/.*/' && sh -c '$HOME/.config/sketchybar/sketchybarrc'
+
+# Restart yabai
+ctrl + lalt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
