@@ -8,7 +8,7 @@ zen_on() {
              --set volume_icon drawing=off \
              --set keyboard drawing=off \
              --set wifi_alias drawing=off \
-             --set battery drawing=off \
+             --set battery drawing=off updates=off \
              --set spotify.anchor drawing=off \
              --set spotify.play updates=off \
              --set brew drawing=off
@@ -22,7 +22,7 @@ zen_off() {
              --set volume_icon drawing=on \
              --set keyboard drawing=on \
              --set wifi_alias drawing=on \
-             --set battery drawing=on \
+             --set battery drawing=on updates=on \
              --set spotify.play updates=on \
              --set brew drawing=on
 }
