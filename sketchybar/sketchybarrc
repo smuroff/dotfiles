@@ -29,7 +29,7 @@ bar=(
   padding_right=12
   padding_left=12
   y_offset=4
-  margin=5
+  margin=4
 )
 
 sketchybar --bar "${bar[@]}"
@@ -61,9 +61,9 @@ defaults=(
 sketchybar --default "${defaults[@]}"
 
 # Left
-source $ITEM_DIR/apple.sh
-source $ITEM_DIR/spaces.sh
-source $ITEM_DIR/front_app.sh
+source "$ITEM_DIR/apple.sh"
+source "$ITEM_DIR/spaces.sh"
+source "$ITEM_DIR/front_app.sh"
 
 # Center
 source "$ITEM_DIR/spotify.sh"
@@ -78,7 +78,6 @@ source "$ITEM_DIR/volume.sh"
 # source "$ITEM_DIR/cpu.sh"
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
-sketchybar --update
-sketchybar --trigger windows_on_spaces
+sketchybar --update --trigger windows_on_spaces
 
 echo "sketchybar configuation loaded.."
